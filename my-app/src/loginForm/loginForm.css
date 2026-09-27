@@ -1,0 +1,283 @@
+:root {
+	--login-ink: #f8fafc;
+	--login-muted: #aab4ca;
+	--login-accent: #7db4ff;
+	--login-accent-dark: #b8d7ff;
+	--login-border: rgba(255, 255, 255, 0.15);
+	--login-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+}
+
+.login-form {
+	width: min(100% - 32px, 420px);
+	margin: auto;
+	padding: 40px;
+	color: var(--login-ink);
+	background: rgba(20, 25, 50, 0.5);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 24px;
+	box-shadow: var(--login-shadow);
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	font-family: Inter, 'Segoe UI', sans-serif;
+	animation: login-appear 0.55s ease-out both;
+}
+
+.login-form form {
+	display: flex;
+	flex-direction: column;
+}
+
+.login-form h1 {
+	margin: 0 0 30px;
+	color: #fff;
+	font-size: 28px;
+	font-weight: 700;
+	text-align: center;
+}
+
+.input-container {
+	position: relative;
+	margin-bottom: 18px;
+}
+
+.input-container label {
+	display: block;
+	margin-bottom: 8px;
+	color: #d6deed;
+	font-size: 0.88rem;
+	font-weight: 500;
+}
+
+.input-container input[type='text'],
+.input-container input[type='password'] {
+	width: 100%;
+	min-height: 52px;
+	padding: 14px 46px 14px 16px;
+	color: #f8fafc;
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid var(--login-border);
+	border-radius: 12px;
+	font: inherit;
+	font-size: 0.95rem;
+	outline: none;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.input-container input::placeholder {
+	color: #aab4ca;
+}
+
+.input-container input:hover {
+	border-color: rgba(255, 255, 255, 0.28);
+}
+
+.input-container input:focus {
+	background: rgba(255, 255, 255, 0.08);
+	border-color: #7db4ff;
+	box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18);
+}
+
+.input-container .icon {
+	position: absolute;
+	right: 17px;
+	bottom: 17px;
+	width: 18px;
+	height: 18px;
+	color: #aab4ca;
+	pointer-events: none;
+}
+
+.remeber {
+	display: flex;
+	align-items: center;
+	flex-wrap: nowrap;
+	gap: 8px;
+	margin: 2px 0 28px;
+	color: var(--login-muted);
+	font-size: 0.84rem;
+	white-space: nowrap;
+}
+
+.custom-checkbox {
+	position: relative;
+	display: inline-flex;
+	width: 22px;
+	height: 22px;
+	flex: 0 0 22px;
+	align-items: center;
+	justify-content: center;
+	padding: 2px;
+	border: 2px solid rgba(125, 180, 255, 0.48);
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.035);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+	cursor: pointer;
+	overflow: hidden;
+}
+
+.custom-checkbox input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	op: 50%;
+	left: 50%;
+	margin: 0;
+	opacity: 0;
+	cursor: pointer;
+}
+
+.checkmark {
+	position: absolute;
+	inset: 2px;
+	border-radius: 5px;
+	background: linear-gradient(145deg, #60a5fa, #2563eb);
+	box-shadow: 0 0 10px rgba(59, 130, 246, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.28);
+	transform: translateY(130%);
+	transition: transform 0.3s ease;
+}
+
+.checkmark::after {
+	position: absolute;
+	top: 1px;
+	left: 4px;
+	width: 4px;
+	height: 8px;
+	content: '';
+	border: solid #071126;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+	transform: translateY(0);
+}
+
+.custom-checkbox input:focus-visible ~ .checkmark {
+	outline: 2px solid #dbeafe;
+	outline-offset: 2px;
+}
+
+.custom-checkbox:has(input:focus-visible) {
+	outline: 2px solid rgba(125, 180, 255, 0.55);
+	outline-offset: 3px;
+}
+
+.remeber label {
+	cursor: pointer;
+}
+
+.remeber a,
+.signup a {
+	color: var(--login-accent);
+	font-weight: 600;
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.remeber a {
+	margin-left: auto;
+}
+
+.remeber a:hover,
+.signup a:hover {
+	color: var(--login-accent-dark);
+	text-decoration: underline;
+}
+
+.login-form button {
+  padding: 1em 2em;
+  border: none;
+  border-radius: 30px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #0c2c94;;
+  transition: all 1000ms;
+  font-size: 15px;
+  position: relative;
+  overflow: hidden;
+  outline: 2px solid var(--login-accent);
+  transition: all 1000ms;
+}
+
+.login-form button:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+  outline: 2px solid #0e3c9a;
+  box-shadow: 4px 5px 17px -4px #264191;
+}
+
+.login-form button::before {
+  content: "";
+  position: absolute;
+  left: -50px;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: #0c2c94;
+  transform: skewX(45deg);
+  z-index: -1;
+  transition: width 1000ms;
+}
+
+.login-form button:hover::before {
+  width: 250%;
+}
+
+.login-form button:focus-visible,
+.remeber a:focus-visible,
+.signup a:focus-visible {
+	outline: 3px solid rgba(125, 180, 255, 0.55);
+	outline-offset: 3px;
+}
+
+.signup {
+	order: 3;
+	margin-top: 23px;
+	color: var(--login-muted);
+	font-size: 0.84rem;
+	text-align: center;
+}
+
+.signup p {
+	margin: 0;
+	white-space: nowrap;
+}
+
+@keyframes login-appear {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (max-width: 480px) {
+	.login-form {
+		width: min(100% - 24px, 420px);
+		padding: 32px 22px;
+	}
+
+	.remeber,
+	.signup {
+		font-size: 0.76rem;
+	}
+
+	.remeber {
+		gap: 6px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.login-form,
+	.login-form button,
+	.input-container input,
+	.checkmark {
+		animation: none;
+		transition: none;
+	}
+}
