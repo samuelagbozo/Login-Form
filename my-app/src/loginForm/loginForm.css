@@ -57,6 +57,7 @@
 	background: rgba(255, 255, 255, 0.05);
 	border: 1px solid var(--login-border);
 	border-radius: 12px;
+	box-shadow: 2px 3px 0 rgba(91, 139, 220, 0.42);
 	font: inherit;
 	font-size: 0.95rem;
 	outline: none;
@@ -74,7 +75,7 @@
 .input-container input:focus {
 	background: rgba(255, 255, 255, 0.08);
 	border-color: #7db4ff;
-	box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18);
+	box-shadow: 5px 6px 0 rgba(59, 130, 246, 0.62);
 }
 
 .input-container .icon {
@@ -119,7 +120,7 @@
 	position: absolute;
 	width: 1px;
 	height: 1px;
-	op: 50%;
+	top: 50%;
 	left: 50%;
 	margin: 0;
 	opacity: 0;

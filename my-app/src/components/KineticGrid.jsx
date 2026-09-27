@@ -2,35 +2,26 @@ import { useEffect, useRef } from 'react';
 
 const spacing = 42;
 
-export default function KineticGrid({ children }) {
+export default function KineticGrid({ theme = 'dark' }) {
+  const fieldRef = useRef(null);
   const canvasRef = useRef(null);
-  const pointerRef = useRef({ x: -1000, y: -1000 });
-  const ripplesRef = useRef([]);
 
   useEffect(() => {
+    const field = fieldRef.current;
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let frameId;
-    let width = 0;
-    let height = 0;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const pointer = { x: -1000, y: -1000 };
+    let ripples = [];
+    let frameId = 0;
+    let width = 1;
+    let height = 1;
     let pixelRatio = 1;
 
-    const resize = () => {
-      const bounds = canvas.getBoundingClientRect();
-      pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-      width = bounds.width;
-      height = bounds.height;
-      canvas.width = Math.round(width * pixelRatio);
-      canvas.height = Math.round(height * pixelRatio);
-      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    };
-
     const draw = (time) => {
+      frameId = 0;
       context.clearRect(0, 0, width, height);
       context.lineWidth = 1;
-      const pointer = pointerRef.current;
-      const ripples = ripplesRef.current;
 
       for (let x = 0; x <= width + spacing; x += spacing) {
         context.beginPath();
@@ -55,7 +46,7 @@ export default function KineticGrid({ children }) {
           if (y === 0) context.moveTo(px, py);
           else context.lineTo(px, py);
         }
-        context.strokeStyle = 'rgba(85, 142, 255, 0.17)';
+        context.strokeStyle = theme === 'light' ? 'rgba(191, 219, 254, 0.24)' : 'rgba(160, 198, 255, 0.24)';
         context.stroke();
       }
 
@@ -82,44 +73,72 @@ export default function KineticGrid({ children }) {
           if (x === 0) context.moveTo(px, py);
           else context.lineTo(px, py);
         }
-        context.strokeStyle = 'rgba(85, 142, 255, 0.17)';
+        context.strokeStyle = theme === 'light' ? 'rgba(191, 219, 254, 0.24)' : 'rgba(160, 198, 255, 0.24)';
         context.stroke();
       }
 
-      ripplesRef.current = ripples.filter((ripple) => time - ripple.started < 1300);
-      if (!reducedMotion || ripplesRef.current.length) frameId = requestAnimationFrame(draw);
+      ripples = ripples.filter((ripple) => time - ripple.started < 1300);
+      if (!motion.matches && !document.hidden) frameId = requestAnimationFrame(draw);
     };
 
-    resize();
-    frameId = requestAnimationFrame(draw);
+    const schedule = () => {
+      if (!frameId) frameId = requestAnimationFrame(draw);
+    };
+
+    const resize = () => {
+      const bounds = field.getBoundingClientRect();
+      width = bounds.width;
+      height = bounds.height;
+      pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * pixelRatio);
+      canvas.height = Math.round(height * pixelRatio);
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      schedule();
+    };
+
+    const updatePointer = (event) => {
+      const bounds = field.getBoundingClientRect();
+      pointer.x = event.clientX - bounds.left;
+      pointer.y = event.clientY - bounds.top;
+      schedule();
+    };
+
+    const addRipple = (event) => {
+      updatePointer(event);
+      const bounds = field.getBoundingClientRect();
+      ripples.push({ x: event.clientX - bounds.left, y: event.clientY - bounds.top, started: performance.now() });
+      ripples = ripples.slice(-4);
+      schedule();
+    };
+
+    const handleVisibility = () => {
+      if (document.hidden) cancelAnimationFrame(frameId);
+      else schedule();
+    };
+
+    const observer = new ResizeObserver(resize);
+    observer.observe(field);
     window.addEventListener('resize', resize);
+    window.addEventListener('pointermove', updatePointer, { passive: true });
+    window.addEventListener('click', addRipple);
+    document.addEventListener('visibilitychange', handleVisibility);
+    motion.addEventListener('change', schedule);
+    resize();
+
     return () => {
       cancelAnimationFrame(frameId);
+      observer.disconnect();
       window.removeEventListener('resize', resize);
+      window.removeEventListener('pointermove', updatePointer);
+      window.removeEventListener('click', addRipple);
+      document.removeEventListener('visibilitychange', handleVisibility);
+      motion.removeEventListener('change', schedule);
     };
-  }, []);
-
-  const updatePointer = (event) => {
-    const bounds = event.currentTarget.getBoundingClientRect();
-    pointerRef.current = { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
-  };
-
-  const addRipple = (event) => {
-    updatePointer(event);
-    const bounds = event.currentTarget.getBoundingClientRect();
-    ripplesRef.current.push({
-      x: event.clientX - bounds.left,
-      y: event.clientY - bounds.top,
-      started: performance.now(),
-      radius: 0,
-    });
-    ripplesRef.current = ripplesRef.current.slice(-4);
-  };
+  }, [theme]);
 
   return (
-    <main className="kinetic-grid" onPointerMove={updatePointer} onPointerLeave={() => { pointerRef.current = { x: -1000, y: -1000 }; }} onClick={addRipple}>
-      <canvas ref={canvasRef} className="kinetic-grid__canvas" aria-hidden="true" />
-      <div className="kinetic-grid__content">{children}</div>
-    </main>
+    <div ref={fieldRef} className={`kinetic-grid kinetic-grid--${theme}`} aria-hidden="true">
+      <canvas ref={canvasRef} className="kinetic-grid__canvas" />
+    </div>
   );
 }

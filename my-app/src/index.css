@@ -22,8 +22,18 @@ body,
 	margin: 0;
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
 body {
 	min-width: 320px;
 	min-height: 100vh;
 	background: linear-gradient(135deg, #0a0e27 0%, #070a1b 52%, #000 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
 }
