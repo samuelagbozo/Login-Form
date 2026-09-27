@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#173C73"/>
+      <stop offset="100%" stop-color="#28579B"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5D8DFF"/>
+      <stop offset="100%" stop-color="#2F63E8"/>
+    </linearGradient>
+    <clipPath id="gridClip">
+      <rect x="36" y="36" width="440" height="440" rx="112"/>
+    </clipPath>
+  </defs>
+
+  <!-- Brand mark -->
+  <rect x="36" y="36" width="440" height="440" rx="112" fill="url(#bg)"/>
+
+  <!-- Subtle blueprint/grid language from the website -->
+  <g clip-path="url(#gridClip)" opacity=".16" stroke="#DCEAFF" stroke-width="2">
+    <path d="M96 20V492 M156 20V492 M216 20V492 M276 20V492 M336 20V492 M396 20V492 M456 20V492"/>
+    <path d="M20 96H492 M20 156H492 M20 216H492 M20 276H492 M20 336H492 M20 396H492 M20 456H492"/>
+  </g>
+
+  <!-- Stylized L -->
+  <path d="M145 118H205V337H345V397H145Z" fill="white"/>
+
+  <!-- Digital/keyhole detail -->
+  <circle cx="347" cy="165" r="48" fill="url(#accent)"/>
+  <circle cx="347" cy="165" r="21" fill="white"/>
+  <path d="M347 178L328 205H366Z" fill="white"/>
+
+  <!-- Small connection nodes -->
+  <circle cx="112" cy="118" r="7" fill="#6E9BFF"/>
+  <circle cx="205" cy="397" r="7" fill="#6E9BFF"/>
+  <circle cx="345" cy="397" r="7" fill="#6E9BFF"/>
+</svg>
